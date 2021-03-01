@@ -8,8 +8,10 @@ import com.widen.urlbuilder.UrlBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebErrorEvent;
 import javafx.scene.web.WebView;
@@ -29,7 +31,6 @@ public class PixivLoginStage extends Stage {
     public static final int DEFAULT_CODE_VERIFIER_LENGTH = 80;
     private String loginUrl = DEFAULT_LOGIN_URL;
     private String callbackUrl = DEFAULT_CALLBACK_URL;
-    private String title = "Pixiv Login";
     private int width = 1024;
     private int height = 768;
     private int codeVerifierLength = DEFAULT_CODE_VERIFIER_LENGTH;
@@ -44,11 +45,6 @@ public class PixivLoginStage extends Stage {
     @NonNull
     public Builder setCallbackUrl(@NonNull String callbackUrl) {
       this.callbackUrl = callbackUrl;
-      return this;
-    }
-    @NonNull
-    public Builder setTitle(@NonNull String title) {
-      this.title = title;
       return this;
     }
     @NonNull
@@ -101,7 +97,6 @@ public class PixivLoginStage extends Stage {
   private final WebView webView;
   private PixivLoginStage(@NonNull Builder builder) {
     Validate.notNull(builder.loginUrl, "Login URL not set");
-    Validate.notNull(builder.title, "Title not set");
     Validate.notNull(builder.callbackUrl, "Callback URL not set");
     Validate.notNull(builder.client, "Client not set");
     this.callbackUrl = builder.callbackUrl;
@@ -122,21 +117,20 @@ public class PixivLoginStage extends Stage {
         throw new RuntimeException("Failed to construct default code challenge");
       }
     }
-    setTitle(builder.title);
+    setTitle("Pixiv Login");
     this.webView = new WebView();
     WebEngine engine = webView.getEngine();
     engine.locationProperty().addListener((obs, oldLocation, newLocation) ->
         onLocationChanged(engine.getLocation()));
     engine.setOnError(this::onWebError);
-    VBox vBox = new VBox(webView);
-    Scene scene = new Scene(vBox, builder.width, builder.height);
+    StackPane pane = new StackPane(webView);
+    Scene scene = new Scene(pane, builder.width, builder.height);
     setScene(scene);
   }
 
   /**
    * Starts the login process to ask the user to login.
    * If it is already started or has ended, it will be restarted.
-   * It's caller's responsibility to set the stage to be visible if needed.
    */
   public void start() {
     codeVerifierValue = codeVerifier.generate(codeVerifierLen);
@@ -146,11 +140,23 @@ public class PixivLoginStage extends Stage {
       .addParameter(PARAM_CODE_CHALLENGE, codeChallengeValue)
       .addParameter(PARAM_CLIENT, client)
       .toString();
+    logger.debug("Loading login URL {}", url);
     webView.getEngine().load(url);
+    show();
+  }
+
+  /**
+   * Gets the generated code verifier value.
+   * If a code verifier value hasn't been generated, it will be empty.
+   * @return Code verifier value or empty.
+   */
+  @NonNull
+  public Optional<String> getCodeVerifier() {
+    return Optional.ofNullable(codeVerifierValue);
   }
 
   public void stop() {
-    webView.getEngine().loadContent("");
+    close();
   }
 
   private void onWebError(@NonNull WebErrorEvent event) {
@@ -164,7 +170,8 @@ public class PixivLoginStage extends Stage {
   }
 
   private void onLocationChanged(@Nullable String location) {
-    if (location == null) {
+    // When directly loading from a html string, the location will be empty string.
+    if (location == null || location.isEmpty()) {
       return;
     }
     try {
