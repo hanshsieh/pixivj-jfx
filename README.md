@@ -1,6 +1,7 @@
 # Pixivj-jfx
 Supporting library for Pixivj using JavaFX.  
 ![Java CI](https://github.com/hanshsieh/pixivj-jfx/workflows/Java%20CI/badge.svg)  
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.hanshsieh/pixivjjfx.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.hanshsieh%22%20AND%20a:%22pixivjjfx%22)  
 
 # Usage
 ## Getting access-token using web view login
@@ -57,4 +58,18 @@ public class Test extends Application {
     launch();
   }
 }
+```
+
+# Contribution
+## Style
+Please follow the [Google coding style](https://google.github.io/styleguide/javaguide.html).  
+You may apply the IntelliJ style file [here](https://github.com/google/styleguide/blob/gh-pages/intellij-java-google-style.xml).  
+
+## Release
+Follow the guide at [here](https://central.sonatype.org/pages/apache-maven.html) to setup your PGP key and 
+`settings.xml`.  
+Update the version in `pom.xml` appropriately.  
+Then, run
+```
+mvn -Duser.name="$(git config --get user.name)" clean deploy -P release
 ```
