@@ -1,4 +1,4 @@
-package com.github.hanshsieh.pixivjjfx;
+package com.github.hanshsieh.pixivjjfx.stage;
 
 import javafx.scene.web.WebErrorEvent;
 import org.checkerframework.checker.nullness.qual.NonNull;
