@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.hanshsieh</groupId>
     <artifactId>pixivjjfx</artifactId>
-    <version>0.0.1-beta-SNAPSHOT</version>
+    <version>0.1.0-beta-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.github.hanshsieh</groupId>
             <artifactId>pixivj</artifactId>
-            <version>0.3.1-alpha-SNAPSHOT</version>
+            <version>0.3.8-alpha-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.checkerframework</groupId>
@@ -62,12 +62,6 @@
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.0</version>
-                    <configuration>
-                        <compilerArgs>
-                            <arg>--add-reads</arg>
-                            <arg>com.github.hanshsieh.pixivjjfx=ALL-UNNAMED</arg>
-                        </compilerArgs>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -112,6 +106,32 @@
                 <!--<configuration>
                     <mainClass>com.github.hanshsieh.pixivjjfx.App</mainClass>
                 </configuration>-->
+            </plugin>
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>1.4.31</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -1,8 +1,5 @@
 package com.github.hanshsieh.pixivjjfx.pkce;
 
-import java.security.SecureRandom;
-import java.util.Random;
-import org.apache.commons.lang3.Validate;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**

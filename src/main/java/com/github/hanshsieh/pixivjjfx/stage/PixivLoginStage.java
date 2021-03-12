@@ -1,15 +1,17 @@
-package com.github.hanshsieh.pixivjjfx;
+package com.github.hanshsieh.pixivjjfx.stage;
 
 import com.github.hanshsieh.pixivjjfx.pkce.CodeChallenge;
 import com.github.hanshsieh.pixivjjfx.pkce.CodeVerifier;
 import com.github.hanshsieh.pixivjjfx.pkce.RandomCodeVerifier;
 import com.github.hanshsieh.pixivjjfx.pkce.S256CodeChallenge;
+import com.github.hanshsieh.pixivjjfx.util.PlatformUtil;
 import com.widen.urlbuilder.UrlBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import javafx.application.Platform;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
@@ -22,6 +24,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class implements a stage for doing Pixiv login.
+ */
 public class PixivLoginStage extends Stage {
   public static class Builder {
     public static final String DEFAULT_LOGIN_URL = "https://app-api.pixiv.net/web/v1/login";
@@ -34,7 +39,7 @@ public class PixivLoginStage extends Stage {
     private int width = 1024;
     private int height = 768;
     private int codeVerifierLength = DEFAULT_CODE_VERIFIER_LENGTH;
-    private RandomCodeVerifier codeVerifier;
+    private CodeVerifier codeVerifier;
     private CodeChallenge codeChallenge;
     private String client = CLIENT_ANDROID;
     @NonNull
@@ -73,12 +78,29 @@ public class PixivLoginStage extends Stage {
       return this;
     }
     @NonNull
-    public Builder setCodeVerifier(@NonNull RandomCodeVerifier codeVerifier) {
+    public Builder setCodeVerifier(@NonNull CodeVerifier codeVerifier) {
       this.codeVerifier = codeVerifier;
       return this;
     }
+    @NonNull
     public PixivLoginStage build() {
       return new PixivLoginStage(this);
+    }
+
+    /**
+     * Builds the stage in JavaFX application thread if needed.
+     * If the current thread if JavaFX application thread, the stage will be created in current
+     * thread. Otherwise, it creates the stage in the JavaFX application thread, and wait until
+     * it is created.
+     * @return Created stage.
+     * @throws InterruptedException Interrupted when waiting the stage.
+     * @throws ExecutionException The stage fails to be executed.
+     */
+    @NonNull
+    public PixivLoginStage buildInFxThread() throws InterruptedException, ExecutionException {
+      FutureTask<PixivLoginStage> task =
+          PlatformUtil.runLater(() -> new PixivLoginStage.Builder().build());
+      return task.get();
     }
   }
   private static final Logger logger = LoggerFactory.getLogger(PixivLoginStage.class);
