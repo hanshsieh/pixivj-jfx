@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.hanshsieh</groupId>
     <artifactId>pixivjjfx</artifactId>
-    <version>0.1.4-beta-SNAPSHOT</version>
+    <version>0.1.4-beta</version>
     <name>pixivj-jfx</name>
     <description>
         Supporting library for Pixivj using JavaFX.
