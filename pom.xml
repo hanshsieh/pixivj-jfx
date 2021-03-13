@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.hanshsieh</groupId>
     <artifactId>pixivjjfx</artifactId>
-    <version>0.1.1-beta</version>
+    <version>0.1.3-beta</version>
     <name>pixivj-jfx</name>
     <description>
         Supporting library for Pixivj using JavaFX.
@@ -48,7 +48,7 @@
         <dependency>
             <groupId>com.github.hanshsieh</groupId>
             <artifactId>pixivj</artifactId>
-            <version>0.3.8-alpha-SNAPSHOT</version>
+            <version>1.0.0-beta</version>
         </dependency>
         <dependency>
             <groupId>org.checkerframework</groupId>
