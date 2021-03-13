@@ -4,6 +4,25 @@ Supporting library for Pixivj using JavaFX.
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.hanshsieh/pixivjjfx.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.hanshsieh%22%20AND%20a:%22pixivjjfx%22)  
 
 # Usage
+## Dependency
+Because of a dependency it uses, please add the following settings to your `pom.xml` (For Maven).
+```xml
+<project>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>bintray</name>
+      <url>https://jcenter.bintray.com</url>
+    </repository>
+  </repositories>
+</project>
+```
+Then, add this library to the dependencies of your project.  
+Check out [here](https://mvnrepository.com/artifact/com.github.hanshsieh/pixivjjfx) for the available
+versions.
 ## Getting access-token using web view login
 ```java
 import com.github.hanshsieh.pixivj.oauth.PixivOAuthClient;
