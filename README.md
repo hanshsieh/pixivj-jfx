@@ -24,6 +24,7 @@ Then, add this library to the dependencies of your project.
 Check out [here](https://mvnrepository.com/artifact/com.github.hanshsieh/pixivjjfx) for the available
 versions.
 ## Getting access-token using web view login
+Here, we show an example for getting an access token by showing a web view with JavaFX.
 ```java
 import com.github.hanshsieh.pixivj.oauth.PixivOAuthClient;
 import com.github.hanshsieh.pixivj.token.ThreadedTokenRefresher;
@@ -78,6 +79,15 @@ public class Test extends Application {
   }
 }
 ```
+Notice that when using JavaFX, you need to define an `Application` instance. The `Application`
+instance defines the entrypoint of a JavaFX application.  
+In the example, we use a separate thread to instantiate the `PixivOAuthClient` instance to simulate
+the case that you want to use the client in a worker thread (instead of JavaFX application thread).  
+It uses `PixivLoginStage.Builder#buildInFxThread()` to instantiate the `PixivLoginStage`. It's 
+because `PixivLoginStage` is a JavaFX stage, and a JavaFX stage can only be instantiated and accessed
+in a JavaFX application thread. `PixivLoginStage.Builder#buildInFxThread()` helps you create the 
+stage in the JavaFX application thread, and passed the object reference to the calling thread. 
+
 
 # Contribution
 ## Style
