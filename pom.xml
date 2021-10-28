@@ -12,7 +12,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>9</maven.compiler.target>
+        <!-- JavaFX needs at least JDK 11 -->
+        <maven.compiler.target>11</maven.compiler.target>
     </properties>
     <licenses>
         <license>
@@ -23,7 +24,7 @@
     <developers>
         <developer>
             <name>Hans Hsieh</name>
-            <email>hanshsieh@example.com</email>
+            <email>539874+hanshsieh@users.noreply.github.com</email>
             <roles>
                 <role>developer</role>
             </roles>
